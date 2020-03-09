@@ -6,6 +6,7 @@ import NewPost from "../../components/NewPost/NewPost";
 import "./Blog.css";
 import axios from "axios";
 
+
 class Blog extends Component {
   state = {
     posts: []
@@ -14,14 +15,21 @@ class Blog extends Component {
   componentDidMount() {
     console.log("[Blog] DidMount.");
     axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
-      this.setState({ posts: response.data });
-      //console.log(response);
+      const posts=response.data.slice(0, 4);
+      const updatedPosts = posts.map(post => {
+        return {
+            ...post,
+            author: `Alex`  
+        }  
+      });
+      this.setState({ posts: updatedPosts });
+      console.log(updatedPosts);
     });
   }
 
   render() {
     const posts = this.state.posts.map(post => {
-      return <Post key={post.id} title={post.title} />;
+      return <Post key={post.id} title={post.title} author={post.author} />;
     });
     return (
       <div>
