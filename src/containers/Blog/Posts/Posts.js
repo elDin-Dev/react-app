@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from "../../../axios";
 import Post from '../../../components/Post/Post';
+
+
 import './Posts.css';
 
 export class Posts extends Component {
@@ -11,6 +13,9 @@ export class Posts extends Component {
 
   componentDidMount() {
     console.log("[Post] DidMount.INIT");
+
+    console.log(this.props);
+
     axios.get("/posts").then(response => {
       console.log(response);
       const posts = response.data.slice(0, 4);
@@ -58,4 +63,4 @@ export class Posts extends Component {
   }
 }
 
-export default Posts;
+export default Posts ;
