@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "../../../axios";
 import Post from '../../../components/Post/Post';
-
+import { Link } from 'react-router-dom';
 
 import './Posts.css';
 
@@ -29,11 +29,11 @@ export class Posts extends Component {
       //console.log(updatedPosts);
     })
       .catch(error => {
-        console.log('EEEEEeeerr'+error);
+        console.log('EEEEEeeerr' + error);
         //this.setState({ error: true });
       });
 
-      console.log("[Post] DidMount.END");
+    console.log("[Post] DidMount.END");
   }
 
   postSelectedHandler = (id) => {
@@ -46,14 +46,18 @@ export class Posts extends Component {
     let posts = <p style={{ textAlign: 'center' }}>Something was wrong!</p>
     if (!this.state.error) {
       posts = this.state.posts.map(post => {
-        return <Post
-          key={post.id}
-          title={post.title}
-          author={post.author}
-          clicked={() => this.postSelectedHandler(post.id)} />;
+        return (
+          <Link to={'/'+post.id} key={post.id}>
+            <Post
+              key={post.id}
+              title={post.title}
+              author={post.author}
+              clicked={() => this.postSelectedHandler(post.id)} />
+          </Link>);
       });
 
     }
+    
 
     return (
       <section className="Posts">
@@ -63,4 +67,4 @@ export class Posts extends Component {
   }
 }
 
-export default Posts ;
+export default Posts;
