@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from "../../../axios";
 import Post from '../../../components/Post/Post';
+import { Route } from 'react-router-dom';
+import FullPost from '../FullPost/FullPost'
 import './Posts.css';
 
 export class Posts extends Component {
@@ -11,6 +13,9 @@ export class Posts extends Component {
 
   componentDidMount() {
     console.log("[Post] DidMount.INIT");
+
+    console.log(this.props);
+
     axios.get("/posts").then(response => {
       console.log(response);
       const posts = response.data.slice(0, 4);
@@ -24,15 +29,16 @@ export class Posts extends Component {
       //console.log(updatedPosts);
     })
       .catch(error => {
-        console.log('EEEEEeeerr'+error);
+        console.log('EEEEEeeerr' + error);
         //this.setState({ error: true });
       });
 
-      console.log("[Post] DidMount.END");
+    console.log("[Post] DidMount.END");
   }
 
   postSelectedHandler = (id) => {
-    this.setState({ selectedPostId: id });
+    //this.setState({ selectedPostId: id });
+    this.props.history.push({ pathname: '/posts/' + id });
   }
 
 
@@ -41,19 +47,28 @@ export class Posts extends Component {
     let posts = <p style={{ textAlign: 'center' }}>Something was wrong!</p>
     if (!this.state.error) {
       posts = this.state.posts.map(post => {
-        return <Post
-          key={post.id}
-          title={post.title}
-          author={post.author}
-          clicked={() => this.postSelectedHandler(post.id)} />;
+        return (
+          //<Link to={'/posts/'+post.id} key={post.id}>
+          <Post
+            key={post.id}
+            title={post.title}
+            author={post.author}
+            clicked={() => this.postSelectedHandler(post.id)} />
+          //</Link>
+        );
       });
 
     }
 
+
     return (
-      <section className="Posts">
-        {posts}
-      </section>
+      <div>
+        <section className="Posts">
+          {posts}
+        </section>
+
+        <Route path={this.props.match.url + "/:id"}  exact component={FullPost} />
+      </div>
     )
   }
 }
